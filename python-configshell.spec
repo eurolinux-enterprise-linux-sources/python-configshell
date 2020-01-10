@@ -1,16 +1,22 @@
 # Copyright 2011, Red Hat
 
-%global oname configshell-fb
+%define oname configshell
 
 Name:           python-configshell
 License:        AGPLv3
 Group:          System Environment/Libraries
 Summary:        A framework to implement simple but nice CLIs
-Epoch:          1
-Version:        1.1.fb4
-Release:        1%{?dist}
-URL:            https://github.com/agrover/configshell-fb
-Source:         https://github.com/agrover/%{oname}/tarball/v%{version}
+Version:        1.99.1.git987b63b
+Release:        5%{?dist}
+# placeholder URL and source entries
+# archive created using:
+# git clone git://risingtidesystems.com/configshell.git
+# cd configshell
+# git archive 987b63b --prefix configshell-%{version}/ | gzip > configshell-%{version}.tar.gz
+URL:            http://www.risingtidesystems.com/git/
+Source:         %{oname}-%{version}.tar.gz
+Patch1:         %{name}-git-version.patch
+Patch2:         %{name}-remove-epydoc-dep.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel epydoc python-simpleparse python-urwid
@@ -21,7 +27,9 @@ A framework to implement simple but nice configuration-oriented
 command-line interfaces.
 
 %prep
-%setup -q -n agrover-%{oname}-0deef22
+%setup -q -n %{oname}-%{version}
+%patch1 -p1
+%patch2 -p1
 
 %build
 %{__python} setup.py build
@@ -40,26 +48,6 @@ rm -rf %{buildroot}
 %doc COPYING README
 
 %changelog
-* Tue Jan 10 2012 Andy Grover <agrover@redhat.com> - 1:1.1.fb4-1
-- New upstream release
-
-* Tue Dec 14 2011 Andy Grover <agrover@redhat.com> - 1:1.1.fb3-1
-- New upstream release
-
-* Tue Dec 13 2011 Andy Grover <agrover@redhat.com> - 1:1.1.fb2-1
-- New upstream release
-
-* Tue Dec 6 2011 Andy Grover <agrover@redhat.com> - 1:1.1.fb1-1
-- New upstream source and release
-- Remove patches:
-  * python-configshell-remove-epydoc-dep.patch
-  * python-configshell-git-version.patch
-
-* Mon Nov 21 2011 Andy Grover <agrover@redhat.com> - 1:1.1-2
-- Properly update changelog
-- Sync version with upstream, Epoch used
-- Change Source URL to intermediate github repo
-
 * Fri Sep 23 2011 Andy Grover <agrover@redhat.com> - 1.99.1.git987b63b-5
 * Rebuild
 
