@@ -48,7 +48,17 @@ if sys.stdout.isatty():
     tty=True
 else:
     tty=False
+    
+    # remember the original setting
+    oldTerm = os.environ['TERM']
+    os.environ['TERM'] = ''
 
+    import readline
+
+    # restore the orignal TERM setting
+    os.environ['TERM'] = oldTerm
+    del oldTerm
+    
 # Pyparsing helper to group the location of a token and its value
 # http://stackoverflow.com/questions/18706631/pyparsing-get-token-location-in-results-name
 locator = Empty().setParseAction(lambda s, l, t: l)
@@ -107,7 +117,7 @@ class ConfigShell(object):
 
         # Grammar of the command line
         command = locatedExpr(Word(alphanums + '_'))('command')
-        var = Word(alphanums + '_\+/.<>()~@:-%]')
+        var = Word(alphanums + '_\+/.<>()~@:-%[]')
         value = var
         keyword = Word(alphanums + '_\-')
         kparam = locatedExpr(keyword + Suppress('=') + Optional(value, default=''))('kparams*')
@@ -122,7 +132,7 @@ class ConfigShell(object):
         self._parser = parser
 
         if tty:
-            readline.set_completer_delims('\t\n ~!#$^&()[{]}\|;\'",?')
+            readline.set_completer_delims('\t\n ~!#$^&(){}\|;\'",?')
             readline.set_completion_display_matches_hook(
                 self._display_completions)
 

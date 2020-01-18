@@ -20,12 +20,12 @@ from setuptools import setup
 
 setup(
     name = 'configshell-fb',
-    version = '1.1.18',
+    version = '1.1.23',
     description = 'A framework to implement simple but nice CLIs.',
     license = 'Apache 2.0',
     maintainer = 'Andy Grover',
     maintainer_email = 'agrover@redhat.com',
-    url = 'http://github.com/agrover/configshell-fb',
+    url = 'http://github.com/open-iscsi/configshell-fb',
     packages = ['configshell', 'configshell_fb'],
     classifiers = [
         "Programming Language :: Python",

@@ -7,10 +7,12 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        A framework to implement simple but nice CLIs
 Epoch:          1
-Version:        1.1.fb18
-Release:        1%{?dist}
+Version:        1.1.fb23
+Release:        3%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
+Patch0:         0001-Handle-if-TERM-is-not-set.patch
+Patch1:         0002-Fix-path-regex-for-and.patch
 BuildArch:      noarch
 BuildRequires:  python-devel python-setuptools
 Requires: pyparsing python-urwid python-six
@@ -21,6 +23,8 @@ command-line interfaces.
 
 %prep
 %setup -q -n %{oname}-%{version}
+%patch0 -p1
+%patch1 -p1
 
 %build
 %{__python} setup.py build
@@ -34,6 +38,16 @@ rm -rf %{buildroot}
 %doc COPYING README.md
 
 %changelog
+* Tue May 30 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-3
+- Rename configshell-fix-term.patch to 0001*
+- Add 0002-Fix-path-regex-for-and.patch
+
+* Tue May 23 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-2
+- Add configshell-fix-term.patch
+
+* Thu Mar 2 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-1
+- Update to latest in Fedora
+
 * Wed Jul 15 2015 Andy Grover <agrover@redhat.com> - 1:1.1.fb18-1
 - Update to latest in Fedora
 

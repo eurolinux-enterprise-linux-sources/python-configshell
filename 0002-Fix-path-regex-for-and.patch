@@ -1,0 +1,27 @@
+From 744da6cbfb69d7cca3f38a51be0de98e7fa585d9 Mon Sep 17 00:00:00 2001
+From: Andy Grover <agrover@redhat.com>
+Date: Tue, 30 May 2017 15:37:25 -0700
+Subject: [PATCH] Fix path regex for [ and ]
+
+When dealing with ipv6, we now have paths consisting of square
+brackets. We need to add these characters to the path regex for
+them to match properly.
+
+Signed-off-by: Andy Grover <agrover@redhat.com>
+---
+ configshell/shell.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configshell/shell.py b/configshell/shell.py
+index e029c76..3d0fce9 100644
+--- a/configshell/shell.py
++++ b/configshell/shell.py
+@@ -126,7 +126,7 @@ class ConfigShell(object):
+         parameter = kparam | pparam
+         parameters = OneOrMore(parameter)
+         bookmark = Regex('@([A-Za-z0-9:_.]|-)+')
+-        pathstd = Regex('([A-Za-z0-9:_.]|-)*' + '/' + '([A-Za-z0-9:_./]|-)*') \
++        pathstd = Regex('([A-Za-z0-9:_.\[\]]|-)*' + '/' + '([A-Za-z0-9:_.\[\]/]|-)*') \
+                 | '..' | '.'
+         path = locatedExpr(bookmark | pathstd | '*')('path')
+         parser = Optional(path) + Optional(command) + Optional(parameters)
