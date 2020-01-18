@@ -8,7 +8,7 @@ Group:          System Environment/Libraries
 Summary:        A framework to implement simple but nice CLIs
 Epoch:          1
 Version:        1.1.fb23
-Release:        4%{?dist}
+Release:        5%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Patch0:         0001-Handle-if-TERM-is-not-set.patch
@@ -42,6 +42,9 @@ rm -rf %{buildroot}
 %doc COPYING README.md
 
 %changelog
+* Fri Aug 10 2018 Maurizio Lombardi <mlombard@redhat.com> - 1:1.1.fb23-5
+- Respin a new release of python-configshell to avoid problems with TPS tests
+
 * Thu Mar 29 2018 Maurizio Lombardi <mlombard@redhat.com> - 1:1.1.fb23-4
 - Fix failure when parsing parameters
 - Add 0003-Fix-failing-to-pasre-par-val-parameters.patch
