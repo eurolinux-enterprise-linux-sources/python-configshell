@@ -48,18 +48,7 @@ if sys.stdout.isatty():
     tty=True
 else:
     tty=False
-    
-    # remember the original setting
-    oldTerm = os.environ.get('TERM')
-    os.environ['TERM'] = ''
 
-    import readline
-
-    # restore the orignal TERM setting
-    if oldTerm != None:
-        os.environ['TERM'] = oldTerm
-    del oldTerm
-    
 # Pyparsing helper to group the location of a token and its value
 # http://stackoverflow.com/questions/18706631/pyparsing-get-token-location-in-results-name
 locator = Empty().setParseAction(lambda s, l, t: l)
@@ -118,7 +107,7 @@ class ConfigShell(object):
 
         # Grammar of the command line
         command = locatedExpr(Word(alphanums + '_'))('command')
-        var = Word(alphanums + ';,=_\+/.<>()~@:-%[]')
+        var = Word(alphanums + '_\+/.<>()~@:-%]')
         value = var
         keyword = Word(alphanums + '_\-')
         kparam = locatedExpr(keyword + Suppress('=') + Optional(value, default=''))('kparams*')
@@ -126,14 +115,14 @@ class ConfigShell(object):
         parameter = kparam | pparam
         parameters = OneOrMore(parameter)
         bookmark = Regex('@([A-Za-z0-9:_.]|-)+')
-        pathstd = Regex('([A-Za-z0-9:_.\[\]]|-)*' + '/' + '([A-Za-z0-9:_.\[\]/]|-)*') \
+        pathstd = Regex('([A-Za-z0-9:_.]|-)*' + '/' + '([A-Za-z0-9:_./]|-)*') \
                 | '..' | '.'
         path = locatedExpr(bookmark | pathstd | '*')('path')
         parser = Optional(path) + Optional(command) + Optional(parameters)
         self._parser = parser
 
         if tty:
-            readline.set_completer_delims('\t\n ~!#$^&(){}\|;\'",?')
+            readline.set_completer_delims('\t\n ~!#$^&()[{]}\|;\'",?')
             readline.set_completion_display_matches_hook(
                 self._display_completions)
 
@@ -843,7 +832,7 @@ class ConfigShell(object):
         @type cmdline: str
         '''
         if cmdline:
-            self.log.verbose("Running command line '%s'." % cmdline)
+            self.log.debug("Running command line '%s'." % cmdline)
             path, command, pparams, kparams = self._parse_cmdline(cmdline)[1:]
             self._execute_command(path, command, pparams, kparams)
 
@@ -876,7 +865,7 @@ class ConfigShell(object):
         self._current_node = self._root_node
         for cmdline in file_descriptor:
             try:
-                self.run_cmdline(cmdline.strip())
+                self.run_cmdline(cmdline)
             except Exception as msg:
                 self.log.error(msg)
                 if exit_on_error is True:

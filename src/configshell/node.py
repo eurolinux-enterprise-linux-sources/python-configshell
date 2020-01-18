@@ -56,7 +56,7 @@ class ConfigNode(object):
                  B{pwd} command to display the complete current path.
 
                  Navigating the tree is done using the B{cd} command. Without
-                 any argument, B{cd} will present you with the full objects
+                 any argument, B{cd} will present you wil the full objects
                  tree. Just use arrows to select the destination path, and
                  enter will get you there. Please try B{help cd} for navigation
                  tips.
@@ -1061,6 +1061,9 @@ class ConfigNode(object):
         '''
         import urwid
 
+        class Selected(Exception):
+            pass
+
         palette = [('header', 'white', 'black'),
                    ('reveal focus', 'black', 'yellow', 'standout')]
 
@@ -1083,12 +1086,14 @@ class ConfigNode(object):
                     except IndexError:
                         pass
                 elif key == 'enter':
-                    raise urwid.ExitMainLoop()
+                    raise Selected(pos)
 
         content.set_focus(start_pos)
         loop = urwid.MainLoop(frame, palette, input_filter=handle_input)
-        loop.run()
-        return listbox.focus_position
+        try:
+            loop.run()
+        except Selected as pos:
+            return int(str(pos))
 
     def ui_complete_cd(self, parameters, text, current_param):
         '''

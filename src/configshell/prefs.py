@@ -16,7 +16,6 @@ under the License.
 '''
 
 import six
-import fcntl
 
 class Prefs(object):
     '''
@@ -129,7 +128,6 @@ class Prefs(object):
 
         if filename is not None:
             fsock = open(filename, 'wb')
-            fcntl.lockf(fsock, fcntl.LOCK_UN)
             try:
                 six.moves.cPickle.dump(self._prefs, fsock, 2)
             finally:
@@ -145,7 +143,6 @@ class Prefs(object):
 
         if filename is not None:
             fsock = open(filename, 'rb')
-            fcntl.lockf(fsock, fcntl.LOCK_SH)
             try:
                 self._prefs = six.moves.cPickle.load(fsock)
             finally:

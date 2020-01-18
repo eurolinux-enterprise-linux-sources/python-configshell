@@ -7,7 +7,7 @@ License:        ASL 2.0
 Group:          System Environment/Libraries
 Summary:        A framework to implement simple but nice CLIs
 Epoch:          1
-Version:        1.1.fb25
+Version:        1.1.fb18
 Release:        1%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
@@ -34,27 +34,6 @@ rm -rf %{buildroot}
 %doc COPYING README.md
 
 %changelog
-* Wed Jan 30 2019 Maurizio Lombardi <mlombard@redhat.com> - 1:1.1.fb25-1
-- Rebase python-configshell to the latest upstream version
-
-* Fri Aug 10 2018 Maurizio Lombardi <mlombard@redhat.com> - 1:1.1.fb23-5
-- Respin a new release of python-configshell to avoid problems with TPS tests
-
-* Thu Mar 29 2018 Maurizio Lombardi <mlombard@redhat.com> - 1:1.1.fb23-4
-- Fix failure when parsing parameters
-- Add 0003-Fix-failing-to-pasre-par-val-parameters.patch
-- Add 0004-Fix-failing-to-pasre-param-like-cfgstr-par-val.patch
-
-* Tue May 30 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-3
-- Rename configshell-fix-term.patch to 0001*
-- Add 0002-Fix-path-regex-for-and.patch
-
-* Tue May 23 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-2
-- Add configshell-fix-term.patch
-
-* Thu Mar 2 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-1
-- Update to latest in Fedora
-
 * Wed Jul 15 2015 Andy Grover <agrover@redhat.com> - 1:1.1.fb18-1
 - Update to latest in Fedora
 
