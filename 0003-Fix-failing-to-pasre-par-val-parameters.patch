@@ -1,0 +1,30 @@
+From 8970d90888657ae352a6a48ba1e63f746005a163 Mon Sep 17 00:00:00 2001
+From: Xiubo Li <lixiubo@cmss.chinamobile.com>
+Date: Wed, 6 Sep 2017 17:31:26 +0800
+Subject: [PATCH] Fix failing to pasre par=val parameters
+
+Through targetcli-fb to create LIO ceph target device like:
+/backstores/user:rbd> create block0 10G pool/rbd1/osd_op_timeout=30
+the =30 will be ignored.
+
+Signed-off-by: Xiubo Li <lixiubo@cmss.chinamobile.com>
+---
+ configshell/shell.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configshell/shell.py b/configshell/shell.py
+index 3d0fce9..382d67b 100644
+--- a/configshell/shell.py
++++ b/configshell/shell.py
+@@ -118,7 +118,7 @@ class ConfigShell(object):
+ 
+         # Grammar of the command line
+         command = locatedExpr(Word(alphanums + '_'))('command')
+-        var = Word(alphanums + '_\+/.<>()~@:-%[]')
++        var = Word(alphanums + '=_\+/.<>()~@:-%[]')
+         value = var
+         keyword = Word(alphanums + '_\-')
+         kparam = locatedExpr(keyword + Suppress('=') + Optional(value, default=''))('kparams*')
+-- 
+1.8.3.1
+

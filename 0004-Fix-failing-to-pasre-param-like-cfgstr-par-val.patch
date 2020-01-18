@@ -1,0 +1,30 @@
+From 341018797fcb47bdeda1a5c87266d4b14f51c945 Mon Sep 17 00:00:00 2001
+From: Xiubo Li <xiubli@redhat.com>
+Date: Thu, 22 Feb 2018 01:46:20 -0500
+Subject: [PATCH] Fix failing to pasre param like "cfgstr,par=val"
+
+Through targetcli-fb to create LIO ceph target device like:
+/backstores/user:rbd create block0 1G pool/blk,max_data_area_mb=16
+then the ",max_data_area_mb=16" string will be ignored.
+
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
+ configshell/shell.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configshell/shell.py b/configshell/shell.py
+index 96c754a..3400f6d 100644
+--- a/configshell/shell.py
++++ b/configshell/shell.py
+@@ -118,7 +118,7 @@ class ConfigShell(object):
+ 
+         # Grammar of the command line
+         command = locatedExpr(Word(alphanums + '_'))('command')
+-        var = Word(alphanums + '=_\+/.<>()~@:-%[]')
++        var = Word(alphanums + ',=_\+/.<>()~@:-%[]')
+         value = var
+         keyword = Word(alphanums + '_\-')
+         kparam = locatedExpr(keyword + Suppress('=') + Optional(value, default=''))('kparams*')
+-- 
+1.8.3.1
+

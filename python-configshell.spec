@@ -8,11 +8,13 @@ Group:          System Environment/Libraries
 Summary:        A framework to implement simple but nice CLIs
 Epoch:          1
 Version:        1.1.fb23
-Release:        3%{?dist}
+Release:        4%{?dist}
 URL:            https://fedorahosted.org/targetcli-fb/
 Source:         https://fedorahosted.org/released/targetcli-fb/%{oname}-%{version}.tar.gz
 Patch0:         0001-Handle-if-TERM-is-not-set.patch
 Patch1:         0002-Fix-path-regex-for-and.patch
+Patch2:         0003-Fix-failing-to-pasre-par-val-parameters.patch
+Patch3:         0004-Fix-failing-to-pasre-param-like-cfgstr-par-val.patch
 BuildArch:      noarch
 BuildRequires:  python-devel python-setuptools
 Requires: pyparsing python-urwid python-six
@@ -25,6 +27,8 @@ command-line interfaces.
 %setup -q -n %{oname}-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__python} setup.py build
@@ -38,6 +42,11 @@ rm -rf %{buildroot}
 %doc COPYING README.md
 
 %changelog
+* Thu Mar 29 2018 Maurizio Lombardi <mlombard@redhat.com> - 1:1.1.fb23-4
+- Fix failure when parsing parameters
+- Add 0003-Fix-failing-to-pasre-par-val-parameters.patch
+- Add 0004-Fix-failing-to-pasre-param-like-cfgstr-par-val.patch
+
 * Tue May 30 2017 Andy Grover <agrover@redhat.com> - 1:1.1.fb23-3
 - Rename configshell-fix-term.patch to 0001*
 - Add 0002-Fix-path-regex-for-and.patch
